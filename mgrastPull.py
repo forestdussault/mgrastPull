@@ -1,5 +1,3 @@
-
-
 import os
 import argparse
 from subprocess import Popen, check_call
@@ -24,7 +22,15 @@ class PullMetagenomes(object):
                 else:
                     pass
 
+        # Counting
         incomplete_list_of_ids = list(set(list_of_ids) - set(completed_list_of_ids))
+        num_complete = len(completed_list_of_ids)
+        num_total = len(completed_list_of_ids)+len(incomplete_list_of_ids)
+        percent_complete = ((float(num_complete)/float(num_total))*100)
+
+        print 'Completed: {0}\nTotal: {1}\n{0}/{1} = {2:.2f}%'.format(num_complete,
+                                                                      num_total,
+                                                                      percent_complete)
 
         return completed_list_of_ids, incomplete_list_of_ids
 
@@ -115,7 +121,7 @@ class PullMetagenomes(object):
         # Figure out which files need to be downloaded/gzipped
         completed_list, incomplete_list = self.init_completion_status(list_of_ids)
 
-        print 'Work already completed for the following:\n' + str(completed_list)
+        # print 'Work already completed for the following:\n' + str(completed_list)
 
         # Start downloading and gzipping
         for id in incomplete_list:
